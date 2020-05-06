@@ -6,43 +6,51 @@ const progressText = document.getElementById('progressText');
 const scoreText = document.getElementById('score');
 const progressBarFull = document.getElementById('progressBarFull');
 
+const loader = document.getElementById("loader");
+const game = document.getElementById("game");
+
 let currentQuestion = {};
 let acceptingAnswers = false;
 let score = 0;
 let questionCounter = 0;
 let availableQuestions = [];
 
-let questions = [
-    {
-        "question": "Inside which HTML element do we put the JavaScript??",
-        "choice1": "&ltscript&gt",
-        "choice2": "&ltjavascript&gt",
-        "choice3": "&ltjs&gt",
-        "choice4": "&ltscripting&gt",
-        "answer": 1
-    },
-    {
-        "question": "What is the correct syntax for referring to an external script called 'xxx.js'?",
-        "choice1": "&ltscript href='xxx.js'&gt",
-        "choice2": "&ltscript name='xxx.js'&gt",
-        "choice3": "&ltscript src='xxx.js'&gt",
-        "choice4": "&ltscript file='xxx.js'&gt",
-        "answer": 3
-    },
-    {
-        "question": " How do you write 'Hello World' in an alert box?",
-        "choice1": "msgBox('Hello World');",
-        "choice2": "alertBox('Hello World');",
-        "choice3": "msg('Hello World');",
-        "choice4": "alert('Hello World');",
-        "answer": 4
-    }
-]
+let questions = []
 
 // CONSTANTS 
 
+fetch("https://opentdb.com/api.php?amount=10&category=11&difficulty=easy&type=multiple")
+   
+    .then(res => {
+        return res.json();
+    })
+    .then(loadedQuestions => {
+        console.log(loadedQuestions.results);
+      
+        questions = loadedQuestions.results.map(loadedQuestions => {
+            const formattedQuestion = {
+                question: loadedQuestions.question
+           };
+           const answerChoices = [...loadedQuestions.incorrect_answers];
+           formattedQuestion.answer = Math.floor(Math.random() * 3) +1;
+           answerChoices.splice(formattedQuestion.answer -1, 0, loadedQuestions.incorrect_answers);
+
+           answerChoices.forEach((choice, index) => {
+               formattedQuestion["choice" + (index + 1)] = choice;
+           });
+
+           return formattedQuestion;
+        });
+       
+        startGame();
+    })
+    .catch(err => {
+        console.log(err);
+    })
+  
+
 const CORRECT_BONUS = 10;
-const MAX_QUESTIONS = 3;
+const MAX_QUESTIONS = 10;
 
 startGame = () => {
     questionCounter = 0;
@@ -50,25 +58,26 @@ startGame = () => {
     availableQuestions = [...questions];
     
     getNewQuestion();
+    game.classList.remove("hidden");
+    loader.classList.add("hidden");
 }
 
 getNewQuestion = () => {
 
     if(availableQuestions.length === 0 || questionCounter >= MAX_QUESTIONS) {
+        console.log(score)
+        localStorage.setItem('mostRecentScore', score)
         return window.location.assign('/end.html')
     }
     questionCounter++;
     progressText.innerText = 'Question'+ questionCounter + '/' + MAX_QUESTIONS;
    
-    console.log(questionCounter / MAX_QUESTIONS * 100);
-    
     progressBarFull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`;
    
     const questionIndex = Math.floor(Math.random() + availableQuestions.length -1);
     currentQuestion = availableQuestions[questionIndex];
     question.innerText = currentQuestion.question;
     
-   
     choices.forEach(choice => {
         const number = choice.dataset["number"];
         choice.innerHTML = currentQuestion["choice" + number];
@@ -112,4 +121,3 @@ incrementScore = num => {
     scoreText.innerText = score;
 }
 
-startGame();

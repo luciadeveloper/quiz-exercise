@@ -1,0 +1,26 @@
+#highScoresList {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 4rem;
+    border: 2px solid #fff;
+    padding: 20px;
+  }
+  
+  .high-score {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+
+    background: white;
+    padding: 2px;
+    color: #00cec9;
+    padding: 5px 10px;
+  }
+  
+  .high-score:last-child {
+    margin-bottom: 0;
+  }
+  .high-score:hover {
+    transform: scale(1.025);
+  }
+
+  

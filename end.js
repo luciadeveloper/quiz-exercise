@@ -5,6 +5,8 @@ const mostRecentScore = localStorage.getItem("mostRecentScore");
 
 const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
 
+console.log(mostRecentScore)
+
 const MAX_HIGH_SCORES = 5;
 
 finalScore.innerText = mostRecentScore;
@@ -18,12 +20,12 @@ saveHighScore = e => {
     e.preventDefault();
 
     const score = {
-    score: Math.floor(Math.random() * 100),
-    name: username.value
+        score: mostRecentScore,
+        name: username.value
     };
-    highScores.push(score);
-    highScores.sort((a, b) => b.score - a.score);
-    highScores.splice(5);
+    highScores.push(score); // adds the item to the end of the array
+    highScores.sort((a, b) => b.score - a.score); //orders an array of objects, depending on one of the values
+    highScores.splice(5); // removes from array what is after position 4
 
     localStorage.setItem("highScores", JSON.stringify(highScores));
     window.location.assign("/");
