@@ -1,6 +1,11 @@
 const question = document.getElementById('question');
 const choices = Array.from(document.getElementsByClassName('choice-text')); //this was returning an html collection that had to be converted into an array
 
+//const questionCounterText = document.getElementById('questionCounter');
+const progressText = document.getElementById('progressText');
+const scoreText = document.getElementById('score');
+const progressBarFull = document.getElementById('progressBarFull');
+
 let currentQuestion = {};
 let acceptingAnswers = false;
 let score = 0;
@@ -40,7 +45,7 @@ const CORRECT_BONUS = 10;
 const MAX_QUESTIONS = 3;
 
 startGame = () => {
-    questionCountr = 0;
+    questionCounter = 0;
     score = 0;
     availableQuestions = [...questions];
     
@@ -53,6 +58,12 @@ getNewQuestion = () => {
         return window.location.assign('/end.html')
     }
     questionCounter++;
+    progressText.innerText = 'Question'+ questionCounter + '/' + MAX_QUESTIONS;
+   
+    console.log(questionCounter / MAX_QUESTIONS * 100);
+    
+    progressBarFull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`;
+   
     const questionIndex = Math.floor(Math.random() + availableQuestions.length -1);
     currentQuestion = availableQuestions[questionIndex];
     question.innerText = currentQuestion.question;
@@ -77,14 +88,28 @@ choices.forEach( choice => {
         const selectedAnswer =  selectedChoice.dataset['number'] ;
        
         const classToApply = selectedAnswer == currentQuestion.answer ? "correct" : "incorrect";
+
+        if(classToApply === 'correct') {
+            incrementScore(CORRECT_BONUS);
+        }
+
         selectedChoice.parentElement.classList.add(classToApply);
+        setTimeout( () => {
+            selectedChoice.parentElement.classList.remove(classToApply);
+            getNewQuestion(); 
+        }, 1000);
+       
         
-        //selectedChoice.parentElement.classList.remove(classToApply);
         
         
-        getNewQuestion(); 
 
     })
 })
+
+incrementScore = num => {
+    score += num;
+    console.log(score);
+    scoreText.innerText = score;
+}
 
 startGame();

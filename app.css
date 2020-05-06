@@ -18,14 +18,14 @@
     margin-bottom: 1rem;
   }
   
-  h1 {
+  h1, span {
     font-size: 5.4rem;
     color: #ffeaa7;
-   
     text-shadow: 1px 1px 1px salmon;
     font-style: italic;
     font-family: monospace;
     letter-spacing: -2px;
+    font-weight: bold;
   }
   
   h1 > span {
