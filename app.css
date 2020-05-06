@@ -1,5 +1,5 @@
 :root {
-    background-color: #eee;
+    background-color: #81ecec;
     font-size: 62.5%;
   }
   
@@ -20,8 +20,12 @@
   
   h1 {
     font-size: 5.4rem;
-    color: #56a5eb;
-    margin-bottom: 5rem;
+    color: #ffeaa7;
+   
+    text-shadow: 1px 1px 1px salmon;
+    font-style: italic;
+    font-family: monospace;
+    letter-spacing: -2px;
   }
   
   h1 > span {
@@ -36,8 +40,11 @@
   }
   
   h3 {
-    font-size: 2.8rem;
-    font-weight: 500;
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+    color: #fff;
+    font-weight: bold;
+    font-family: monospace;
   }
   
   /* UTILITIES */
