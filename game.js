@@ -10,18 +10,18 @@ let availableQuestions = [];
 let questions = [
     {
         "question": "Inside which HTML element do we put the JavaScript??",
-        "choice1": "<script>",
-        "choice2": "<javascript>",
-        "choice3": "<js>",
-        "choice4": "<scripting>",
+        "choice1": "&ltscript&gt",
+        "choice2": "&ltjavascript&gt",
+        "choice3": "&ltjs&gt",
+        "choice4": "&ltscripting&gt",
         "answer": 1
     },
     {
         "question": "What is the correct syntax for referring to an external script called 'xxx.js'?",
-        "choice1": "<script href='xxx.js'>",
-        "choice2": "<script name='xxx.js'>",
-        "choice3": "<script src='xxx.js'>",
-        "choice4": "<script file='xxx.js'>",
+        "choice1": "&ltscript href='xxx.js'&gt",
+        "choice2": "&ltscript name='xxx.js'&gt",
+        "choice3": "&ltscript src='xxx.js'&gt",
+        "choice4": "&ltscript file='xxx.js'&gt",
         "answer": 3
     },
     {
@@ -70,12 +70,18 @@ getNewQuestion = () => {
 
 choices.forEach( choice => {
     choice.addEventListener('click', e => {
-        if (acceptingAnswers) return;
+        if (!acceptingAnswers) return;
         
         acceptingAnswers = false;
         const selectedChoice = e.target;
-        const selectAnswer =  selectedChoice.dataset['number'] ;
-        console.log(e.target);
+        const selectedAnswer =  selectedChoice.dataset['number'] ;
+       
+        const classToApply = selectedAnswer == currentQuestion.answer ? "correct" : "incorrect";
+        selectedChoice.parentElement.classList.add(classToApply);
+        
+        //selectedChoice.parentElement.classList.remove(classToApply);
+        
+        
         getNewQuestion(); 
 
     })
